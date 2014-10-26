@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 2.8.8)
-set(PROJECT_NAME_STR google-test-examples)
+set(PROJECT_NAME_STR Biochip)
 project(${PROJECT_NAME_STR} C CXX)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-	add_definitions(-Wall -ansi -Wno-deprecated -pthread)
+	add_definitions(-Wall -ansi -Wno-deprecated -Werror -pedantic -pedantic-errors -Wextra -pthread -std=c++11)
 endif()
 
 if(MSVC)
@@ -15,6 +15,7 @@ endif()
 #-------------------
 set(COMMON_INCLUDES ${PROJECT_SOURCE_DIR}/include)
 set(EXT_PROJECTS_DIR ${PROJECT_SOURCE_DIR}/ext)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 #-------------------
 # Module source
@@ -32,7 +33,7 @@ add_subdirectory(${EXT_PROJECTS_DIR}/gtest)
 #-------------------
 add_definitions(${MSVC_COMPILER_DEFS})
 enable_testing()
-set(PROJECT_TEST_NAME ${PROJECT_NAME_STR}_test)
+set(PROJECT_TEST_NAME ${PROJECT_NAME_STR}Test)
 include_directories(${GTEST_INCLUDE_DIRS} ${COMMON_INCLUDES})
 
 file(GLOB TEST_SRC_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
@@ -58,4 +59,4 @@ else()
 	)
 endif()
 
-add_test(test1 ${PROJECT_TEST_NAME})
+add_test(${PROJECT_TEST_NAME} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_TEST_NAME})

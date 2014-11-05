@@ -19,4 +19,10 @@
 // smart pointer
 #include <memory>
 
+// string
+#include <string>
+
+#include <algorithm>
+#include <utility>
+
 #endif /* GLOBAL_H_ */

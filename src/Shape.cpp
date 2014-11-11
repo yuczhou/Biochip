@@ -9,16 +9,20 @@
 
 namespace BioChip {
 
-Shape::Shape() {
+Shape::Shape(std::string name_) : name(std::move(name_)) {
     // TODO Auto-generated constructor stub
-
 }
 
 Shape::~Shape() {
     // TODO Auto-generated destructor stub
 }
 
-RectangularShape::RectangularShape(Coord dimension_) : dimension(std::move(dimension_)) {
+std::string Shape::toString() const {
+    return name;
+}
+
+RectangularShape::RectangularShape(std::string name_, Coord dimension_)
+        : Shape(name_), dimension(std::move(dimension_)) {
 }
 
 RectangularShape::~RectangularShape() {

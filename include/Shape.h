@@ -13,21 +13,25 @@
 namespace BioChip {
 
 class Shape {
+private:
+    const std::string name;
 public:
-    Shape();
+    Shape(std::string);
 
     virtual ~Shape();
 
     virtual bool isValid(Coord, Coord) = 0;
 
     virtual const Coord &getDimension() const = 0;
+
+    virtual std::string toString() const;
 };
 
 class RectangularShape : public Shape {
 private:
     Coord dimension;
 public:
-    RectangularShape(Coord);
+    RectangularShape(std::string, Coord);
 
     ~RectangularShape();
 

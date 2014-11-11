@@ -9,15 +9,15 @@
 #define CONTAINER_H_
 
 #include "Iterator.h"
+#include "Qualifier.h"
 
 namespace BioChip {
 
 template<class T, class ContainerT>
 class Container {
-private:
+protected:
     typedef std::shared_ptr<Iterator<T, ContainerT> > IteratorPointer;
     typedef std::shared_ptr<ConstIterator<T, ContainerT> > ConstIteratorPointer;
-protected:
     ContainerT container;
 public:
     Container() {
@@ -32,6 +32,14 @@ public:
 
     ConstIteratorPointer getIterator() const {
         return ConstIteratorPointer(new ConstIterator<T, ContainerT>(container));
+    }
+
+    IteratorPointer getIterator(const Qualifier<T> &condition) {
+        return IteratorPointer(new ConditionedIterator<T, ContainerT, Qualifier<T> >(container, condition));
+    }
+
+    ConstIteratorPointer getIterator(const Qualifier<T> &condition) const {
+        return ConstIteratorPointer(new ConstConditionedIterator<T, ContainerT, Qualifier<T> >(container, condition));
     }
 
     class ContainerT::iterator begin() {

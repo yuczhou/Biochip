@@ -101,6 +101,10 @@ public:
         return os;
     }
 
+    std::string toString() const {
+        return std::to_string(x) + "_" + std::to_string(y) + "_" + std::to_string(z);
+    }
+
     static CoordTemplate<T> origin;
 };
 

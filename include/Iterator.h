@@ -33,7 +33,7 @@ public:
 
 template<class T, class Container>
 class Iterator : public AbstractIterator<T, Container> {
-private:
+protected:
     Container &container;
 
     class Container::iterator innerIterator;
@@ -46,18 +46,18 @@ public:
     virtual ~Iterator() {
     }
 
-    bool hasNext() const {
+    virtual bool hasNext() const override {
         return innerIterator != container.end();
     }
 
-    T &next() {
+    virtual T &next() override {
         return *innerIterator++;
     }
 };
 
 template<class T, class Container>
 class ConstIterator : public AbstractIterator<T, Container> {
-private:
+protected:
     const Container &container;
     mutable class Container::const_iterator innerIterator;
 public:
@@ -68,12 +68,62 @@ public:
     virtual ~ConstIterator() {
     }
 
-    bool hasNext() const {
+    virtual bool hasNext() const override {
         return innerIterator != container.end();
     }
 
-    const T &next() const {
+    virtual const T &next() const override {
         return *innerIterator++;
+    }
+};
+
+template<class T, class Container, class Condition>
+class ConditionedIterator : public Iterator<T, Container> {
+private:
+    const Condition &condition;
+public:
+    ConditionedIterator(Container &container_, const Condition &condition_)
+            : Iterator<T, Container>(container_), condition(condition_) {
+    }
+
+    virtual ~ConditionedIterator() {
+    }
+
+    virtual bool hasNext() const override {
+        while (Iterator<T, Container>::hasNext() && !condition(*(this->innerIterator))) {
+            const_cast<ConditionedIterator *>(this)->Iterator<T, Container>::next();
+        }
+        return Iterator<T, Container>::hasNext();
+    }
+
+    virtual T &next() override {
+        hasNext();
+        return Iterator<T, Container>::next();
+    }
+};
+
+template<class T, class Container, class Condition>
+class ConstConditionedIterator : public ConstIterator<T, Container> {
+private:
+    const Condition &condition;
+public:
+    ConstConditionedIterator(const Container &container_, const Condition &condition_)
+            : ConstIterator<T, Container>(container_), condition(condition_) {
+    }
+
+    virtual ~ConstConditionedIterator() {
+    }
+
+    virtual bool hasNext() const override {
+        while (ConstIterator<T, Container>::hasNext() && !condition(*(this->innerIterator))) {
+            ConstIterator<T, Container>::next();
+        }
+        return ConstIterator<T, Container>::hasNext();
+    }
+
+    virtual const T &next() const override {
+        hasNext();
+        return ConstIterator<T, Container>::next();
     }
 };
 

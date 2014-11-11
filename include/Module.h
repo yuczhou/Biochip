@@ -37,6 +37,10 @@ public:
     ShapePointer &getShape() {
         return shape;
     }
+
+    std::string toString() const {
+        return std::move(name + "_" + lowerLeft.toString() + "_" + shape->toString());
+    }
 };
 
 typedef std::shared_ptr<Module> ModulePointer;

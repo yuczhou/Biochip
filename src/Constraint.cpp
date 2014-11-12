@@ -13,6 +13,9 @@
 namespace BioChip {
 
 std::string Constraint::toString() const {
+    if (modules.size() == 0) {
+        return "";
+    }
     std::string ret;
     for (auto modulePointer : modules) {
         ret += modulePointer->toString() + "+";

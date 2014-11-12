@@ -12,14 +12,14 @@ namespace BioChip {
 
 class OddQualifier : public Qualifier<int> {
 public:
-    virtual bool operator()(const int& element) const override {
+    virtual bool operator()(const int &element) const override {
         return element & 1;
     }
 };
 
 class NegativeQualifier : public Qualifier<int> {
 public:
-    virtual bool operator()(const int& element) const override {
+    virtual bool operator()(const int &element) const override {
         return element < 0;
     }
 };
@@ -39,7 +39,7 @@ protected:
 };
 
 TEST_F(IteratorTest, arrayListConstConditionIterator) {
-    const ArrayList<int>& constArrayList = arrayList;
+    const ArrayList<int> &constArrayList = arrayList;
     auto iterator = constArrayList.getIterator(qualifier);
 
     EXPECT_TRUE(iterator->hasNext());
@@ -70,7 +70,7 @@ TEST_F(IteratorTest, arrayListConditionIterator) {
 }
 
 TEST_F(IteratorTest, linkedListConstConditionIterator) {
-    const LinkedList<int>& constArrayList = linkedList;
+    const LinkedList<int> &constArrayList = linkedList;
     auto iterator = constArrayList.getIterator(qualifier);
 
     EXPECT_TRUE(iterator->hasNext());

@@ -29,6 +29,10 @@ void Grid::constructGrid() {
     }
 }
 
+Coord Grid::getUpperRight() const {
+    return Coord(dimension.x - 1, dimension.y - 1, dimension.z - 1);
+}
+
 }
 
 #endif

@@ -28,6 +28,10 @@ void ModuleFactory::addShape(ShapePointer shape) {
     this->shapes.add(shape);
 }
 
+size_t ModuleFactory::numOfShapes() const {
+    return shapes.size();
+}
+
 // Rectangular Module Factory
 RectangularModuleFactory::RectangularModuleFactory(const char *name_) : GraphNode(name_), ModuleFactory(name_) {
 }

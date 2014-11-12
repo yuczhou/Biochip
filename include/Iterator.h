@@ -115,7 +115,7 @@ public:
     }
 
     virtual bool hasNext() const override {
-        while (ConstIterator<T, Container>::hasNext() && !condition(*(this->innerIterator))) {
+        while (ConstIterator<T, Container>::hasNext() && !condition(*ConstIterator<T, Container>::innerIterator)) {
             ConstIterator<T, Container>::next();
         }
         return ConstIterator<T, Container>::hasNext();

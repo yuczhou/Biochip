@@ -3,7 +3,7 @@ set(PROJECT_NAME_STR Biochip)
 project(${PROJECT_NAME_STR} C CXX)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-	add_definitions(-Wall -ansi -Wno-deprecated -Werror -pedantic -pedantic-errors -Wextra -pthread -std=c++11)
+	add_definitions(-g -Wall -Werror -ansi -Wno-deprecated -pedantic -pedantic-errors -Wextra -pthread -std=c++11)
 endif()
 
 if(MSVC)

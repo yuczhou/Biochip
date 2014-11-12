@@ -35,6 +35,8 @@ protected:
     virtual std::string toStringRHS() const;
 };
 
+typedef std::shared_ptr<Constraint> ConstraintPointer;
+
 }
 
 #endif

@@ -30,6 +30,8 @@ public:
     virtual ~ModuleFactory();
 
     void addShape(ShapePointer);
+
+    size_t numOfShapes() const;
 };
 
 class RectangularModuleFactory : public GraphNode, public ModuleFactory {
@@ -41,6 +43,8 @@ public:
 
     virtual ~RectangularModuleFactory();
 };
+
+typedef std::shared_ptr<ModuleFactory> ModuleNodePointer;
 
 }
 

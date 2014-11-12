@@ -63,6 +63,10 @@ public:
     virtual bool contains(T element) const {
         return std::find(begin(), end(), element) != end();
     }
+
+    size_t size() const {
+        return container.size();
+    }
 };
 
 template<class T>

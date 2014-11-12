@@ -13,7 +13,10 @@
 
 namespace BioChip {
 
-class Grid : public LinkedList<Coord> {
+typedef LinkedList<Coord> CoordLinkedList;
+typedef AbstractIterator<Coord, std::list<Coord> > CoordIterator;
+
+class Grid : public CoordLinkedList {
 private:
     Coord dimension;
 private:
@@ -23,6 +26,8 @@ public:
     Grid(int, int, int);
 
     Grid(Coord);
+
+    Coord getUpperRight() const;
 };
 
 }

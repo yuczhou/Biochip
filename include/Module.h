@@ -38,6 +38,10 @@ public:
         return shape;
     }
 
+    bool isValid(const Coord &upperRight) const {
+        return shape->isValid(lowerLeft, upperRight);
+    }
+
     std::string toString() const {
         return std::move(name + "_" + lowerLeft.toString() + "_" + shape->toString());
     }

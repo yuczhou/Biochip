@@ -29,7 +29,8 @@ RectangularShape::~RectangularShape() {
 }
 
 bool RectangularShape::isValid(Coord lowerLeft, Coord upperRight) {
-    return lowerLeft.add(dimension) <= upperRight;
+    Coord shiftedDimension(dimension.x - 1, dimension.y - 1, dimension.z - 1);
+    return lowerLeft.add(shiftedDimension) <= upperRight;
 }
 
 const Coord &RectangularShape::getDimension() const {

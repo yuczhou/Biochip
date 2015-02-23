@@ -13,6 +13,8 @@
 
 // container
 #include <unordered_set>
+#include <unordered_map>
+#include <map>
 #include <vector>
 #include <list>
 
@@ -21,8 +23,15 @@
 
 // string
 #include <string>
+#include <string.h>
+#include <sstream>
 
+// algorithm
 #include <algorithm>
 #include <utility>
+#include <cstdlib>
+
+// file
+#include <fstream>
 
 #endif /* GLOBAL_H_ */

@@ -20,6 +20,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(PROJECT_LIB_NAME ${PROJECT_NAME_STR}Lib)
 set(PROJECT_TEST_NAME ${PROJECT_NAME_STR}Test)
 
+# lp solve
+set(LP_SOLVE_LIB_DIR ${EXT_PROJECTS_DIR}/lp_solve_5.5/lpsolve55/bin/ux64)
+set(LP_SOLVE_SRC_DIR ${EXT_PROJECTS_DIR}/lp_solve_5.5)
+
 #-------------------
 # Sub directories
 #-------------------

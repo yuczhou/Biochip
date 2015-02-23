@@ -10,22 +10,22 @@
 
 namespace BioChip {
 
-template<class T>
-class Qualifier {
-public:
-    ~Qualifier() {
-    }
+    template<class T>
+    class Qualifier {
+    public:
+        ~Qualifier() {
+        }
 
-    virtual bool operator()(const T &) const = 0;
-};
+        virtual bool operator()(const T &) const = 0;
+    };
 
-template<class T>
-class DummyQualifier : public Qualifier<T> {
-public:
-    virtual bool operator()(const T &element) const override {
-        return true;
-    }
-};
+    template<class T>
+    class DummyQualifier : public Qualifier<T> {
+    public:
+        virtual bool operator()(const T &element) const override {
+            return true;
+        }
+    };
 
 }
 

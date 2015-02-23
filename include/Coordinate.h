@@ -12,115 +12,127 @@
 
 namespace BioChip {
 
-typedef int Position;
-typedef int Capacity;
-typedef int Direction;
+    typedef int Position;
+    typedef int Capacity;
+    typedef int Direction;
 
-template<class T>
-struct CoordTemplate {
-private:
-    T array[3]; // as to make directions cheaply "indexable"
+    template<class T>
+    struct CoordTemplate {
+    private:
+        T array[3]; // as to make directions cheaply "indexable"
 
-public:
-    T &x;
-    T &y;
-    T &z;
+    public:
+        T &x;
+        T &y;
+        T &z;
 
-    CoordTemplate() :
-            x(array[0]), y(array[1]), z(array[2]) {
-        x = y = z = 0;
-    }
+        CoordTemplate() :
+                x(array[0]), y(array[1]), z(array[2]) {
+            x = y = z = 0;
+        }
 
-    CoordTemplate(T _x_, T _y_, T _z_) :
-            x(array[0]), y(array[1]), z(array[2]) {
-        x = _x_;
-        y = _y_;
-        z = _z_;
-    }
+        CoordTemplate(T _x_, T _y_, T _z_) :
+                x(array[0]), y(array[1]), z(array[2]) {
+            x = _x_;
+            y = _y_;
+            z = _z_;
+        }
 
-    CoordTemplate(const CoordTemplate<T> &c) :
-            x(array[0]), y(array[1]), z(array[2]) {
-        x = c.x;
-        y = c.y;
-        z = c.z;
-    }
+        CoordTemplate(const CoordTemplate<T> &c) :
+                x(array[0]), y(array[1]), z(array[2]) {
+            x = c.x;
+            y = c.y;
+            z = c.z;
+        }
 
-    inline CoordTemplate<T> add(const CoordTemplate<T> &c) {
-        return std::move(CoordTemplate<T>(x + c.x, y + c.y, z + c.z));
-    }
+        inline CoordTemplate<T> add(const CoordTemplate<T> &c) {
+            return std::move(CoordTemplate<T>(x + c.x, y + c.y, z + c.z));
+        }
 
-    inline T &operator()(int i) {
-        return array[i];
-    }
+        inline CoordTemplate<T> operator%(const CoordTemplate<T> &c) const {
+            return std::move(CoordTemplate<T>(x % c.x, y % c.y, z % c.z));
+        }
 
-    inline CoordTemplate &operator=(const CoordTemplate<T> &c) {
-        x = c.x;
-        y = c.y;
-        z = c.z;
-        return *this;
-    }
+        inline CoordTemplate<T> operator/(const CoordTemplate<T> &c) const {
+            return std::move(CoordTemplate<T>(x / c.x, y / c.y, z / c.z));
+        }
 
-    inline bool operator==(const CoordTemplate<T> &c) const {
-        return x == c.x && y == c.y && z == c.z;
-    }
+        inline CoordTemplate<T> max(const CoordTemplate<T> &c) const {
+            return std::move(CoordTemplate<T>(std::max(x, c.x), std::max(y, c.y), std::max(z, c.z)));
+        }
 
-    inline bool operator!=(const CoordTemplate<T> &c) const {
-        return !(*this == c);
-    }
+        inline T &operator()(int i) {
+            return array[i];
+        }
 
-    inline bool operator<(const CoordTemplate<T> &c) const {
-        if (x != c.x)
-            return (x < c.x);
-        if (y != c.y)
-            return (y < c.y);
-        if (z != c.z)
-            return (z < c.z);
-        return false;
-    }
+        inline CoordTemplate &operator=(const CoordTemplate<T> &c) {
+            x = c.x;
+            y = c.y;
+            z = c.z;
+            return *this;
+        }
 
-    inline bool operator>(const CoordTemplate<T> &c) const {
-        if (x != c.x)
-            return (x > c.x);
-        if (y != c.y)
-            return (y > c.y);
-        if (z != c.z)
-            return (z > c.z);
-        return false;
-    }
+        inline bool operator==(const CoordTemplate<T> &c) const {
+            return x == c.x && y == c.y && z == c.z;
+        }
 
-    inline bool operator<=(const CoordTemplate<T> &c) const {
-        return *this < c || *this == c;
-    }
+        inline bool operator!=(const CoordTemplate<T> &c) const {
+            return !(*this == c);
+        }
 
-    inline Position operator-(const CoordTemplate<T> &c) const {
-        return std::abs(x - c.x) + std::abs(y - c.y) + std::abs(z - c.z);
-    }
+        inline bool operator<(const CoordTemplate<T> &c) const {
+            if (x != c.x)
+                return (x < c.x);
+            if (y != c.y)
+                return (y < c.y);
+            if (z != c.z)
+                return (z < c.z);
+            return false;
+        }
 
-    std::ostream &operator<<(std::ostream &os) const {
-        os << "(" << x << "," << y << "," << z << ")";
+        inline bool operator>(const CoordTemplate<T> &c) const {
+            if (x != c.x)
+                return (x > c.x);
+            if (y != c.y)
+                return (y > c.y);
+            if (z != c.z)
+                return (z > c.z);
+            return false;
+        }
+
+        inline bool operator<=(const CoordTemplate<T> &c) const {
+            return *this < c || *this == c;
+        }
+
+        inline Position operator-(const CoordTemplate<T> &c) const {
+            return std::abs(x - c.x) + std::abs(y - c.y) + std::abs(z - c.z);
+        }
+
+        std::ostream &operator<<(std::ostream &os) const {
+            os << "(" << x << "," << y << "," << z << ")";
+            return os;
+        }
+
+        std::string toString() const {
+            return std::to_string(x) + "_" + std::to_string(y) + "_" + std::to_string(z);
+        }
+
+        static CoordTemplate<T> origin;
+    };
+
+    template<class T>
+    std::ostream &operator<<(std::ostream &os, const CoordTemplate<T> &c) {
+        os << "(" << c.x << "," << c.y << "," << c.z << ")";
         return os;
     }
 
-    std::string toString() const {
-        return std::to_string(x) + "_" + std::to_string(y) + "_" + std::to_string(z);
-    }
+    typedef CoordTemplate<Position> Coord;
+    typedef CoordTemplate<double> dblTriple;
 
-    static CoordTemplate<T> origin;
-};
+    template<class T>
+    CoordTemplate<T> CoordTemplate<T>::origin(
 
-template<class T>
-std::ostream &operator<<(std::ostream &os, const CoordTemplate<T> &c) {
-    os << "(" << c.x << "," << c.y << "," << c.z << ")";
-    return os;
-}
-
-typedef CoordTemplate<Position> Coord;
-typedef CoordTemplate<double> dblTriple;
-
-template<class T>
-CoordTemplate<T> CoordTemplate<T>::origin(
-
-0, 0, 0);
+    0, 0, 0);
 
 }
 #endif /* COORDINATE_H_ */

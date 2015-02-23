@@ -12,29 +12,54 @@
 
 namespace BioChip {
 
-std::string Constraint::toString() const {
-    if (modules.size() == 0) {
-        return "";
+    LinkedList<ModulePointer> &Constraint::getModules() {
+        return modules;
     }
-    std::string ret;
-    for (auto modulePointer : modules) {
-        ret += modulePointer->toString() + "+";
+
+    const LinkedList<ModulePointer> &Constraint::getModules() const {
+        return modules;
     }
-    ret.pop_back();
-    return ret + toStringRHS();
-}
 
-void Constraint::addVariable(ModulePointer module) {
-    modules.add(module);
-}
+    Constraint::Constraint(bool isEqualityConstraint_) : isEqualityConstraint(isEqualityConstraint_) {
+    }
 
-std::string EqualityConstraint::toStringRHS() const {
-    return "=1";
-}
+    std::string Constraint::toString() const {
+        if (modules.size() == 0) {
+            return "";
+        }
+        std::string ret;
+        for (auto modulePointer : modules) {
+            ret += modulePointer->toString() + "+";
+        }
+        ret.pop_back();
+        return ret + toStringRHS();
+    }
 
-std::string InEqualityConstraint::toStringRHS() const {
-    return "<=1";
-}
+    void Constraint::addVariable(ModulePointer module) {
+        modules.add(module);
+    }
+
+    bool Constraint::isEmpty() const {
+        return modules.size() == 0;
+    }
+
+    bool Constraint::getIsEqualityConstraint() const {
+        return isEqualityConstraint;
+    }
+
+    EqualityConstraint::EqualityConstraint() : Constraint(true) {
+    }
+
+    InEqualityConstraint::InEqualityConstraint() : Constraint(false) {
+    }
+
+    std::string EqualityConstraint::toStringRHS() const {
+        return "=1";
+    }
+
+    std::string InEqualityConstraint::toStringRHS() const {
+        return "<=1";
+    }
 
 }
 

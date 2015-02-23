@@ -11,9 +11,9 @@
 
 namespace BioChip {
 
-Module::Module(char const *name_, Coord lowerLeft_, ShapePointer shape_)
-        : name(name_), lowerLeft(lowerLeft_), shape(shape_) {
-}
+    Module::Module(char const *name_, Coord lowerLeft_, ShapePointer shape_)
+            : name(name_), lowerLeft(lowerLeft_), shape(shape_) {
+    }
 
 } /* namespace BioChip */
 

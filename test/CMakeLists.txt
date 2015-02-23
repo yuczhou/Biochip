@@ -1,10 +1,10 @@
-include_directories(${COMMON_INCLUDES})
+include_directories(${COMMON_INCLUDES} ${LP_SOLVE_SRC_DIR})
 
 #-------------------
 # Test
 #-------------------
 add_definitions(${MSVC_COMPILER_DEFS})
-include_directories(${GTEST_INCLUDE_DIRS} ${COMMON_INCLUDES})
+include_directories(${GTEST_INCLUDE_DIRS} ${COMMON_INCLUDES} ${PROJECT_LIB_DIR})
 
 file(GLOB TEST_SRC_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
 add_executable(${PROJECT_TEST_NAME} ${TEST_SRC_FILES})
@@ -17,6 +17,8 @@ if(NOT WIN32)
 		${GTEST_LIBS_DIR}/libgtest_main.a
 		pthread
 		${PROJECT_LIB_NAME}
+		${LP_SOLVE_LIB_DIR}/liblpsolve55.a
+		dl
 	)
 else()
 

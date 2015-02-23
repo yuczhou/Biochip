@@ -13,16 +13,15 @@
 #include "Iterator.h"
 #include "ModuleNode.h"
 #include "Grid.h"
+#include "Utility.h"
 
 namespace BioChip {
 
-typedef Qualifier<Coord> CoordValidator;
-typedef std::shared_ptr<CoordValidator> CoordValidatorPointer;
+    typedef Qualifier<Coord> CoordValidator;
+    typedef std::shared_ptr<CoordValidator> CoordValidatorPointer;
 
-class ConstraintBuilder {
-private:
     class GeneralValidator : public CoordValidator {
-    private:
+    protected:
         const Coord upperRight;
         const ModuleFactory &moduleNode;
         size_t shape;
@@ -32,48 +31,94 @@ private:
         virtual bool operator()(const Coord &) const;
     };
 
-protected:
-    const ModuleNodePointer moduleNodePointer;
-    const Grid &grid;
-protected:
-    CoordValidatorPointer getValidator(size_t) const;
+    class ConstraintBuilder {
+    protected:
+        const ModuleNodePointer moduleNodePointer;
+        const Grid &grid;
+        std::shared_ptr<LinkedList<ConstraintPointer> > equations = Utility::getPointer(new LinkedList<ConstraintPointer>());
+    protected:
+        virtual CoordValidatorPointer getValidator(size_t) const;
 
-    virtual void fixedCoordBuildConstraint(ModulePointer) const = 0;
+        virtual void fixedCoordBuildConstraint(ModulePointer) = 0;
 
-public:
-    ConstraintBuilder(const ModuleNodePointer &, const Grid &);
+        virtual void postBuildEquations();
 
-    void buildConstraint() const;
-};
+    public:
+        ConstraintBuilder(const ModuleNodePointer &, const Grid &);
 
-class SingleConstraintGenerator {
-protected:
-    ConstraintPointer equation;
-public:
-    SingleConstraintGenerator(ConstraintPointer);
+        const std::shared_ptr<LinkedList<ConstraintPointer> > &buildConstraint();
+    };
 
-    ConstraintPointer getConstraint() {
-        return equation;
-    }
-};
+    class SingleConstraintGenerator {
+    protected:
+        ConstraintPointer equation;
+    public:
+        SingleConstraintGenerator(ConstraintPointer);
 
-class SingleEqualityGenerator : public SingleConstraintGenerator {
-public:
-    SingleEqualityGenerator();
-};
+        ConstraintPointer getConstraint() {
+            return equation;
+        }
+    };
 
-class SingleInEqualityGenerator : public SingleConstraintGenerator {
-public:
-    SingleInEqualityGenerator();
-};
+    class SingleEqualityGenerator : public SingleConstraintGenerator {
+    public:
+        SingleEqualityGenerator();
+    };
 
-class SingletonConstraintBuilder : public ConstraintBuilder, public SingleEqualityGenerator {
-protected:
-    virtual void fixedCoordBuildConstraint(ModulePointer) const;
+    class SingleInEqualityGenerator : public SingleConstraintGenerator {
+    public:
+        SingleInEqualityGenerator();
+    };
 
-public:
-    SingletonConstraintBuilder(const ModuleNodePointer &, const Grid &);
-};
+    class SingletonConstraintBuilder : public ConstraintBuilder, public SingleEqualityGenerator {
+    protected:
+        virtual void fixedCoordBuildConstraint(ModulePointer);
+
+        virtual void postBuildEquations();
+
+    public:
+        SingletonConstraintBuilder(const ModuleNodePointer &, const Grid &);
+    };
+
+    class PrecedenceConstraintBuilder : public ConstraintBuilder {
+    private:
+        class FixedNeighborConstraintBuilder : public ConstraintBuilder, public SingleInEqualityGenerator {
+        private:
+            class PrecedenceValidator : public GeneralValidator {
+            private:
+                const ModulePointer &root;
+            public:
+                PrecedenceValidator(const Coord, const ModuleFactory &, size_t, const ModulePointer &);
+
+                virtual bool operator()(const Coord &) const;
+            };
+
+            const ModulePointer &root;
+        protected:
+            virtual void fixedCoordBuildConstraint(ModulePointer);
+
+            virtual CoordValidatorPointer getValidator(size_t) const;
+
+        public:
+            FixedNeighborConstraintBuilder(const ModuleNodePointer &, const Grid &, const ModulePointer &);
+        };
+
+    protected:
+        virtual void fixedCoordBuildConstraint(ModulePointer);
+
+    public:
+        PrecedenceConstraintBuilder(const ModuleNodePointer &, const Grid &);
+    };
+
+    class NonOverlappingConstraintBuilder : public ConstraintBuilder {
+    private:
+        std::map<Coord, ConstraintPointer> &overlapMap;
+    protected:
+        virtual void fixedCoordBuildConstraint(ModulePointer);
+
+    public:
+        NonOverlappingConstraintBuilder(const ModuleNodePointer &, const Grid &, std::map<Coord, ConstraintPointer> &);
+    };
 
 }
 #endif

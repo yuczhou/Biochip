@@ -13,29 +13,47 @@
 
 namespace BioChip {
 
-class Constraint {
-private:
-    LinkedList<ModulePointer> modules;
-protected:
-    virtual std::string toStringRHS() const = 0;
+    class Constraint {
+    private:
+        LinkedList<ModulePointer> modules;
+    protected:
+        bool isEqualityConstraint;
+    protected:
+        virtual std::string toStringRHS() const = 0;
 
-public:
-    std::string toString() const;
+    public:
+        Constraint(bool);
 
-    void addVariable(ModulePointer module);
-};
+        std::string toString() const;
 
-class EqualityConstraint : public Constraint {
-protected:
-    virtual std::string toStringRHS() const;
-};
+        void addVariable(ModulePointer module);
 
-class InEqualityConstraint : public Constraint {
-protected:
-    virtual std::string toStringRHS() const;
-};
+        LinkedList<ModulePointer> &getModules();
 
-typedef std::shared_ptr<Constraint> ConstraintPointer;
+        const LinkedList<ModulePointer> &getModules() const;
+
+        bool isEmpty() const;
+
+        bool getIsEqualityConstraint() const;
+    };
+
+    class EqualityConstraint : public Constraint {
+    protected:
+        virtual std::string toStringRHS() const;
+
+    public:
+        EqualityConstraint();
+    };
+
+    class InEqualityConstraint : public Constraint {
+    protected:
+        virtual std::string toStringRHS() const;
+
+    public:
+        InEqualityConstraint();
+    };
+
+    typedef std::shared_ptr<Constraint> ConstraintPointer;
 
 }
 

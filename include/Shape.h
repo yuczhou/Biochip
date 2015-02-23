@@ -12,33 +12,36 @@
 
 namespace BioChip {
 
-class Shape {
-private:
-    const std::string name;
-public:
-    Shape(std::string);
+    class Shape {
+    private:
+        const std::string name;
+    public:
+        Shape(std::string);
 
-    virtual ~Shape();
+        virtual ~Shape();
 
-    virtual bool isValid(Coord, Coord) = 0;
+        virtual bool isValid(Coord, Coord) = 0;
 
-    virtual const Coord &getDimension() const = 0;
+        virtual const Coord &getDimension() const = 0;
 
-    virtual std::string toString() const;
-};
+        virtual std::string toString() const;
+    };
 
-class RectangularShape : public Shape {
-private:
-    Coord dimension;
-public:
-    RectangularShape(std::string, Coord);
+    class RectangularShape : public Shape {
+    private:
+        Coord dimension;
+    private:
+        bool hasValidDimension() const;
 
-    ~RectangularShape();
+    public:
+        RectangularShape(std::string, Coord);
 
-    virtual bool isValid(Coord, Coord);
+        ~RectangularShape();
 
-    virtual const Coord &getDimension() const override;
-};
+        virtual bool isValid(Coord, Coord);
+
+        virtual const Coord &getDimension() const override;
+    };
 
 } /* namespace BioChip */
 

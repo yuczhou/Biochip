@@ -12,30 +12,30 @@
 
 namespace BioChip {
 
-class GraphNode {
-private:
-    typedef std::shared_ptr<GraphNode> NodePointer;
-    typedef LinkedList<NodePointer> NodeList;
-    NodeList parents;
-    NodeList children;
-    const std::string name;
-public:
-    GraphNode(std::string);
+    class GraphNode {
+    private:
+        typedef std::shared_ptr<GraphNode> NodePointer;
+        typedef LinkedList<NodePointer> NodeList;
+        NodeList parents;
+        NodeList children;
+        const std::string name;
+    public:
+        GraphNode(std::string);
 
-    GraphNode(const char *);
+        GraphNode(const char *);
 
-    virtual ~GraphNode();
+        virtual ~GraphNode();
 
-    void addChild(NodePointer);
+        void addChild(NodePointer);
 
-    void addParent(NodePointer);
+        void addParent(NodePointer);
 
-    const NodeList &getChildren() const;
+        const NodeList &getChildren() const;
 
-    const NodeList &getParents() const;
+        const NodeList &getParents() const;
 
-    const std::string &getName() const;
-};
+        const std::string &getName() const;
+    };
 
 } /* namespace BioChip */
 

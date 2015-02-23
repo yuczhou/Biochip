@@ -14,24 +14,31 @@
 
 namespace BioChip {
 
-class EqualityTest : public ::testing::Test {
-protected:
-    virtual void SetUp() {
-        moduleFactory->addShape(Utility::getPointer(new RectangularShape(std::string("shape1"), Coord(1, 2, 3))));
-        moduleFactory->addShape(Utility::getPointer(new RectangularShape(std::string("shape2"), Coord(2, 3, 4))));
+    class EqualityTest : public ::testing::Test {
+    protected:
+        virtual void SetUp() {
+            moduleFactory->addShape(Utility::getPointer(new RectangularShape(std::string("shape1"), Coord(1, 2, 3))));
+            moduleFactory->addShape(Utility::getPointer(new RectangularShape(std::string("shape2"), Coord(2, 3, 4))));
+        }
+
+        std::shared_ptr<ModuleFactory> moduleFactory = Utility::getPointer(new RectangularModuleFactory("test_factory"));
+    };
+
+    TEST_F(EqualityTest, equalityToStringTest) {
+        EqualityConstraint equation;
+        equation.addVariable(moduleFactory->createModule(0, Coord::origin));
+        equation.addVariable(moduleFactory->createModule(1, Coord(1, 1, 1)));
+
+        EXPECT_STREQ("test_factory_0_0_0_shape1+test_factory_1_1_1_shape2=1", equation.toString().c_str());
     }
 
-    std::shared_ptr<ModuleFactory> moduleFactory = Utility::getPointer(new RectangularModuleFactory("test_factory"));
-};
+    TEST_F(EqualityTest, inequalityToStringTest) {
+        InEqualityConstraint equation;
+        equation.addVariable(moduleFactory->createModule(0, Coord::origin));
+        equation.addVariable(moduleFactory->createModule(1, Coord(1, 1, 1)));
 
-TEST_F(EqualityTest, equalityToStringTest) {
-    EqualityConstraint equation;
-    equation.addVariable(moduleFactory->createModule(0, Coord::origin));
-    equation.addVariable(moduleFactory->createModule(1, Coord(1, 1, 1)));
-
-    EXPECT_STREQ("test_factory_0_0_0_shape1+test_factory_1_1_1_shape2=1", equation.toString().c_str());
-}
-
+        EXPECT_STREQ("test_factory_0_0_0_shape1+test_factory_1_1_1_shape2<=1", equation.toString().c_str());
+    }
 }
 
 #endif

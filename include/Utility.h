@@ -43,6 +43,11 @@ namespace BioChip {
             return stream;
         }
 
+        template<class K, class V>
+        static const V &getElementOr(const std::map<K, V> &container, const K &key, const V &defaultValue) {
+            return container.find(key) != container.end() ? container.at(key) : defaultValue;
+        }
+
     };
 
 }

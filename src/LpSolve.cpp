@@ -10,8 +10,13 @@
 
 #include "Utility.h"
 #include "LpSolve.h"
+#include "Coordinate.h"
 
 namespace BioChip {
+
+    SingleModulePlacement::SingleModulePlacement(Coord const &placement_, int const shape_)
+            : placement(placement_), shape(shape_) {
+    }
 
     LpSolve::LpSolve(const LinkedList<ConstraintPointer> &equations_, const std::map<std::string, int> &moduleIndexMap_)
             : equations(equations_), moduleIndexMap(moduleIndexMap_), lp(NULL), colno(NULL), row(NULL) {
@@ -63,7 +68,7 @@ namespace BioChip {
         return true;
     }
 
-    std::shared_ptr<std::unordered_map<std::string, Coord> > LpSolve::getResult() {
+    std::shared_ptr<std::unordered_map<std::string, SingleModulePlacement> > LpSolve::getPlacement() {
         std::shared_ptr<ModulePlacement> modules = Utility::getPointer(new ModulePlacement());
         for (size_t module = 0; module < moduleIndexMap.size(); module++) {
             if (row[module] != 0) {
@@ -79,8 +84,9 @@ namespace BioChip {
         std::string moduleName;
         *moduleInfo >> moduleName;
         Coord loc;
-        *moduleInfo >> loc.x >> loc.y >> loc.z;
-        modules[moduleName] = loc;
+        int shape;
+        *moduleInfo >> loc.x >> loc.y >> loc.z >> shape;
+        modules.insert(std::pair<std::string, SingleModulePlacement>(moduleName, SingleModulePlacement(loc, shape)));
     }
 }
 #endif

@@ -45,7 +45,7 @@ namespace BioChip {
             z = c.z;
         }
 
-        inline CoordTemplate<T> add(const CoordTemplate<T> &c) {
+        inline CoordTemplate<T> operator+(const CoordTemplate<T> &c) const {
             return std::move(CoordTemplate<T>(x + c.x, y + c.y, z + c.z));
         }
 

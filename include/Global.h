@@ -15,6 +15,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <map>
+#include <set>
 #include <vector>
 #include <list>
 
@@ -33,5 +34,7 @@
 
 // file
 #include <fstream>
+
+#define ptr(PointerType) std::shared_ptr<PointerType>
 
 #endif /* GLOBAL_H_ */

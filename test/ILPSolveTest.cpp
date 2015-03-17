@@ -53,9 +53,11 @@ namespace BioChip {
         LpSolve lp(*equations, moduleIndexMap);
         EXPECT_TRUE(lp.solve());
 
-        auto placement = lp.getResult();
+        auto placement = lp.getPlacement();
         EXPECT_TRUE(placement->find("module1") != placement->end());
         EXPECT_TRUE(placement->find("module2") != placement->end());
+        EXPECT_EQ(0, placement->at("module1").shape);
+        EXPECT_EQ(0, placement->at("module2").shape);
     }
 
 }

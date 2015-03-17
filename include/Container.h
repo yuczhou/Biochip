@@ -62,7 +62,7 @@ namespace BioChip {
 
         virtual void addAll(const Container &other) = 0;
 
-        virtual bool contains(T element) const {
+        virtual bool contains(const T &element) const {
             return std::find(begin(), end(), element) != end();
         }
 
@@ -116,7 +116,7 @@ namespace BioChip {
             this->container.insert(std::move(element));
         }
 
-        virtual bool contains(T element) const override
+        virtual bool contains(const T &element) const override
 
         final {
             return this->container.find(element) != this->end();

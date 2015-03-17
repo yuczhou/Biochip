@@ -12,7 +12,16 @@
 #include "Constraint.h"
 
 namespace BioChip {
-    typedef std::unordered_map<std::string, Coord> ModulePlacement;
+
+    struct SingleModulePlacement {
+    public:
+        const Coord placement;
+        const int shape;
+    public:
+        SingleModulePlacement(const Coord &, const int);
+    };
+
+    typedef std::unordered_map<std::string, SingleModulePlacement> ModulePlacement;
 
     class LpSolve {
     private:
@@ -33,7 +42,7 @@ namespace BioChip {
 
         bool solve();
 
-        std::shared_ptr<ModulePlacement> getResult();
+        std::shared_ptr<ModulePlacement> getPlacement();
     };
 }
 

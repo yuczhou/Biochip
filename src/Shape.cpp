@@ -34,7 +34,7 @@ namespace BioChip {
 
     bool RectangularShape::isValid(Coord lowerLeft, Coord upperRight) {
         Coord shiftedDimension(dimension.x - 1, dimension.y - 1, dimension.z - 1);
-        return hasValidDimension() && lowerLeft.add(shiftedDimension) <= upperRight;
+        return hasValidDimension() && (lowerLeft + shiftedDimension) <= upperRight;
     }
 
     const Coord &RectangularShape::getDimension() const {

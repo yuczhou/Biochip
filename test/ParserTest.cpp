@@ -17,7 +17,7 @@ namespace BioChip {
         virtual void SetUp() {
             // TODO: refactor this hard coding file path thing
             // http://stackoverflow.com/questions/7900661/how-to-read-a-cmake-variable-in-c-source-code
-            parser = Utility::getPointer(new Parser("/home/yuczhou/Projects/Biochip/test/testcase.txt", graph));
+            parser = Utility::getPointer(new Parser("/home/yuczhou/projects/Biochip/test/testcase.txt", graph));
         }
 
         DirectedAcyclicGraph graph;
